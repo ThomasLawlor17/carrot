@@ -12,16 +12,31 @@ TYPES = (
     ('T', 'Track'),
 )
 
+GEARTYPE = (
+    ('S', 'Shoes'),
+    ('H', 'Heartrate-monitor'),
+    ('W', 'Watch'),
+    ('B', 'Bottle'),
+    ('O', 'Other'),
+)
+
 
 
 class Gear(models.Model):
     nickname = models.CharField(max_length=50)
-    brand = models.CharField(max_length=40)
-    model = models.CharField(max_length=50)
-    distance = models.IntegerField(default=0)
+    brand = models.CharField(max_length=40, null=True, blank=True)
+    model = models.CharField(max_length=50, null=True, blank=True)
+    distance = models.IntegerField(default=0, null=True, blank=True)
+    type = models.CharField(
+        max_length=1,
+        choices=GEARTYPE,
+        default=GEARTYPE[0][0]
+    )
+    image = models.CharField(max_length=200, default='https://i.imgur.com/iOWhgv1.png')
     
     def __str__(self):
         return self.nickname
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 now = time.localtime()[3]
 def default_run_name():
@@ -42,7 +57,6 @@ class Run(models.Model):
     date = models.DateField(default=date.today)
     distance = models.IntegerField()
     time = models.DurationField()
-    image = models.CharField(max_length=100, default='https://i.imgur.com/Puwhno0.jpg')
     type = models.CharField(
         max_length=1,
         choices=TYPES,
@@ -55,11 +69,18 @@ class Run(models.Model):
         return f'{self.name}|{self.date}|{self.distance}|{self.time}'
 
     def get_absolute_url(self):
-        return reverse('detail', kwargs={'run_id': self.id})
+        return reverse('run_detail', kwargs={'run_id': self.id})
         
 
     class Meta:
         ordering = ['-date']
+
+class Image(models.Model):
+    url = models.CharField(max_length=200)
+    run = models.ForeignKey(Run, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Image for run_id: {self.run_id} @{self.url}"
 
 
 class Comment(models.Model):

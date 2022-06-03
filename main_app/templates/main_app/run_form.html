@@ -5,21 +5,25 @@
 {% else %}
 <h1>New Run</h1>
 {% endif %}
+{% if form.errors %}
+{{form.errors}}
+{% endif %}
 <!-- Leaving the action empty makes the form post to the same url used to display it -->
 <form action="" method="post">
 <!-- Django requires the following for security purposes -->
 {% csrf_token %}
 <table>
-  <!-- Render the inputs inside of <tr>s & <td>s -->
-  {{ form.as_table }}
+  {{ form.as_p }}
 </table>
 <input type="submit" value="Submit!" class="btn">
 </form>
 <script>
 
+
+
 var dateEl = document.getElementById('id_date')
     M.Datepicker.init(dateEl, {
-        format: 'dd-mm-yyyy',
+        format: 'yyyy-mm-dd',
         defaultDate: new Date(),
         setDefaultDate: true,
         autoclose: true

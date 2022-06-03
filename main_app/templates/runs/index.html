@@ -2,6 +2,17 @@
 {% block content %}
 
 <h1>My Runs</h1>
-
+{% for r in runs %}
+<a href="{% url 'run_detail' r.id %}">
+<div class="card">
+    <div class="card-content">
+        <span class="card-title">{{r.name}}</span>
+        <p>{{r.date}}</p>
+        <p>{{r.distance}} km</p>
+        <p>{{r.time}}</p>
+    </div>
+</div>
+</a>
+{% endfor %}
 
 {% endblock %}

@@ -17,3 +17,16 @@ body {
       max-height: 4rem;
   }
 
+#time-hour,
+#time-minute,
+#time-second {
+  max-width: 50px;
+}
+
+
+@media (min-width: 768px) {
+  .dtt {
+    display: flex;
+    justify-content: space-evenly;
+  }
+}
